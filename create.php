@@ -1,6 +1,5 @@
-<?php 
-
-require_once("libs/Db.php"); 
+<?php
+require_once("libs/Db.php");
 $objDb = new Db();
 $db = $objDb->database;
 ?>
@@ -14,24 +13,20 @@ $db = $objDb->database;
   <body>
 
 <?php
-if(irret($_POST['submit'])){
-$query = $db->prepare("INSERT INTO member (id, firstname, lastname, status) VALUES (NULL, :firstname, :lastname, :status);");
-
-$result = $query->execute([
-  "firstname" => "Surakit",
-  "lastname" => "Choodet",
-  "status" => 1,
-]);
-
-if($result){
-  echo "Successfully";
-}else{
-  echo "Save fail!";
+if(isset($_POST['submit'])){ #isset เช็คว่ามีอยู่จริงไหม
+  $query = $db->prepare("INSERT INTO member (id, firstname, lastname, status) VALUES (NULL,:firstname, :lastname, :status);");
+  $result = $query->execute([
+    "firstname" => $_POST['firstname'],
+    "lastname" => $_POST['lastname'],
+    "status" => $_POST['status'],
+  ]);
+  if($result){
+    echo "Successfully";
+  }else{
+    echo "Save fail!";
+  }
 }
-}
-
 ?>
-
 <form method="post">
   <label for="">Fistname</label>
   <input type="text" name="firstname" value=""><br/>
@@ -47,6 +42,7 @@ if($result){
 
   <input type="submit" name="submit" value="บันทึก">
 </form>
+
 
   </body>
 </html>
